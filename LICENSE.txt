@@ -1,0 +1,4 @@
+HudUniVerse
+Copyright (c) 2026 UniVerse
+
+Source provided for the UniVerse server project.

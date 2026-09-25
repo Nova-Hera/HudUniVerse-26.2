@@ -1,0 +1,59 @@
+# HudUniVerse 1.3.1
+# Target: Paper 26.2 / Java 25
+#
+# The location HUD uses a permanent native BossBar as its text carrier.
+# The companion resource pack hides the BossBar graphics, leaving only the
+# location name at the top of the screen.
+
+messages:
+  prefix: "&2[&aHudUniVerse&2] &r"
+
+location-title:
+  # Legacy centered title. Disabled in 1.3.1.
+  enabled: false
+  show-on-join: false
+
+location-top:
+  enabled: true
+  show-on-join: true
+  # Wait for Towny to settle at a claim border before changing the HUD.
+  debounce-ticks: 6
+  # Deprecated in 1.3.1: the location HUD is permanent.
+  stay-ticks: 0
+  # Only the territory name is shown. No icon and no subtitle.
+  town-title: "&a{town}"
+  wilderness-title: "&7Wilderness"
+
+actionbar:
+  # Disabled by default because AuraSkills may also use the actionbar.
+  enabled: false
+  refresh-ticks: 10
+  format: "&b🌡 &f%huduniverse_temperature%°C &8| &d✦ &f%huduniverse_mana%&7/%huduniverse_mana_max% &8| &c⚔ &f%huduniverse_pvp_color%%huduniverse_pvp%"
+
+placeholders:
+  # Player's own Towny town (the town they belong to).
+  town: "%townyadvanced_town%"
+  nation: "%townyadvanced_nation%"
+  # Physical location town (the town whose claimed land the player is standing in).
+  location-town: "%townyadvanced_player_location_town%"
+  season: "%rs_season%"
+  temperature: "%rs_temperature_int_celcius%"
+  mana: "%auraskills_mana_int%"
+  mana-max: "%auraskills_mana_max_int%"
+
+fallbacks:
+  town: "Sem cidade"
+  nation: ""
+  location-town: "Wilderness"
+  season: ""
+  temperature: "--"
+  mana: "0"
+  mana-max: "0"
+
+pvp:
+  enabled-text: "ON"
+  disabled-text: "OFF"
+  enabled-color: "&a"
+  disabled-color: "&c"
+
+debug: false
