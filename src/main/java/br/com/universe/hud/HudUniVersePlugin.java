@@ -63,7 +63,7 @@ public final class HudUniVersePlugin extends JavaPlugin implements Listener {
             }
         }, refresh, refresh);
 
-        getLogger().info("HudUniVerse 1.3.1 habilitado para Paper 26.2 / Java 25.");
+        getLogger().info("HudUniVerse 1.3.3 habilitado para Paper 26.2 / Java 25.");
     }
 
     @Override
@@ -177,8 +177,10 @@ public final class HudUniVersePlugin extends JavaPlugin implements Listener {
         if (wilderness) {
             title = getConfig().getString("location-top.wilderness-title", "&7Wilderness");
         } else {
-            title = getConfig().getString("location-top.town-title", "&a{town}")
-                    .replace("{town}", locationTown);
+            title = getConfig().getString("location-top.town-title", "&a{town}");
+            String locationNation = getLocationNation(player);
+            title = title.replace("{town}", locationTown)
+                    .replace("{nation}", locationNation.isBlank() ? "Sem nação" : locationNation);
         }
 
         String finalTitle = color(title);
@@ -290,6 +292,26 @@ public final class HudUniVersePlugin extends JavaPlugin implements Listener {
      * Returns the Towny town at the player's current physical location.
      * This is the value shown at the top/center location notification.
      */
+    /**
+     * Returns the nation belonging to the Towny town at the player's physical location.
+     * This is intentionally different from getNation(), which represents the player's
+     * own nation.
+     */
+    public String getLocationNation(Player player) {
+        if (hasTowny()) {
+            try {
+                Town town = TownyAPI.getInstance().getTown(player.getLocation());
+                if (town != null && town.hasNation()) {
+                    return town.getNation().getName();
+                }
+                return "";
+            } catch (Exception ignored) {
+                // Fall back to PlaceholderAPI below.
+            }
+        }
+        return "";
+    }
+
     public String getLocationTown(Player player) {
         if (hasTowny()) {
             try {
@@ -314,6 +336,69 @@ public final class HudUniVersePlugin extends JavaPlugin implements Listener {
     public String getNation(Player player) {
         return value(player, getConfig().getString("placeholders.nation"),
                 getConfig().getString("fallbacks.nation", ""));
+    }
+
+    /**
+     * Returns the Bukkit biome at the player's current block.
+     * Custom biome keys are preserved as namespace:key so RealisticSeasons
+     * biomes remain distinguishable. Vanilla biome names are prettified.
+     */
+    public String getBiome(Player player) {
+        try {
+            String key = player.getLocation().getBlock().getBiome().getKey().toString();
+            if (key == null || key.isBlank()) {
+                return getConfig().getString("fallbacks.biome", "Desconhecido");
+            }
+
+            if (key.startsWith("minecraft:")) {
+                key = key.substring("minecraft:".length());
+            } else if (key.contains(":")) {
+                String[] namespaceAndPath = key.split(":", 2);
+                String namespace = namespaceAndPath[0];
+                String path = namespaceAndPath.length > 1 ? namespaceAndPath[1] : "";
+                String prettyNamespace = namespace.equalsIgnoreCase("realisticseasons")
+                        ? "RealisticSeasons"
+                        : prettyPart(namespace);
+                String prettyPath = prettyPart(path);
+                return prettyPath.isBlank() ? prettyNamespace : prettyNamespace + " " + prettyPath;
+            }
+
+            StringBuilder pretty = new StringBuilder();
+            String[] parts = key.split("[-_]");
+            for (String part : parts) {
+                if (part.isBlank()) {
+                    continue;
+                }
+                if (pretty.length() > 0) {
+                    pretty.append(" ");
+                }
+                pretty.append(prettyPart(part));
+            }
+            return pretty.length() == 0
+                    ? getConfig().getString("fallbacks.biome", "Desconhecido")
+                    : pretty.toString();
+        } catch (Exception ignored) {
+            return getConfig().getString("fallbacks.biome", "Desconhecido");
+        }
+    }
+
+    private String prettyPart(String part) {
+        if (part == null || part.isBlank()) {
+            return "";
+        }
+        String[] words = part.split("[-_]", -1);
+        StringBuilder result = new StringBuilder();
+        for (String word : words) {
+            if (word.isBlank()) {
+                continue;
+            }
+            if (result.length() > 0) {
+                result.append(" ");
+            }
+            result.append(Character.toUpperCase(word.charAt(0)))
+                    .append(word.substring(1));
+        }
+        return result.toString();
     }
 
     public boolean isPvpEnabled(Player player) {
@@ -372,6 +457,7 @@ public final class HudUniVersePlugin extends JavaPlugin implements Listener {
                 sender.sendMessage(color("&aLocalização atual: &f" + (getLocationTown((Player) sender).isBlank() ? "Wilderness" : getLocationTown((Player) sender))));
                 sender.sendMessage(color("&aNação: &f" + getNation((Player) sender)));
                 sender.sendMessage(color("&aTemporada: &f" + getSeason((Player) sender)));
+                sender.sendMessage(color("&aBioma: &f" + getBiome((Player) sender)));
                 sender.sendMessage(color("&aTemperatura: &f" + getTemperature((Player) sender)));
                 sender.sendMessage(color("&aMana: &f" + getMana((Player) sender) + "/" + getManaMax((Player) sender)));
                 sender.sendMessage(color("&aPVP: &f" + (isPvpEnabled((Player) sender) ? "ON" : "OFF")));

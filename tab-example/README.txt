@@ -13,6 +13,7 @@ scoreboard:
         - "&a⌂ Cidade:||&f%huduniverse_town%"
         - "&d✦ Mana:||&d%huduniverse_mana%&7/%huduniverse_mana_max%"
         - "&b❄ Temp:||&b%huduniverse_temperature%°C"
+        - "&🌿 Bioma:||&a%huduniverse_biome%"
         - "&7☀ Estação:||&f%huduniverse_season%"
         - "&c⚔ PVP:||%huduniverse_pvp_color%%huduniverse_pvp%"
         - ""
@@ -33,7 +34,10 @@ O `||` é o recurso nativo do TAB para colocar texto no lado direito em clientes
 IMPORTANTE: se `/papi parse me %huduniverse_town%` não retornar o nome da cidade, o problema é no PlaceholderAPI/Towny, não no lado direito do TAB.
 
 
-HudUniVerse 1.3.1:
+HudUniVerse 1.3.3:
 - The physical Towny location is shown permanently at the top by HudUniVerse.
 - `%huduniverse_town%` remains the player's own Towny town and belongs in the TAB scoreboard.
 - Install `resource-pack/HudUniVerse-TopText-26.2.zip` on clients to hide the BossBar graphics and keep only the location text.
+
+
+HudUniVerse 1.3.3: `%huduniverse_biome%` returns the biome at the player's current block for use in TAB.

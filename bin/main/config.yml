@@ -1,4 +1,4 @@
-# HudUniVerse 1.3.3
+# HudUniVerse 1.3.1
 # Target: Paper 26.2 / Java 25
 #
 # The location HUD uses a permanent native BossBar as its text carrier.
@@ -21,7 +21,7 @@ location-top:
   # Deprecated in 1.3.1: the location HUD is permanent.
   stay-ticks: 0
   # Only the territory name is shown. No icon and no subtitle.
-  town-title: "&a{town} &8| &b{nation}"
+  town-title: "&a{town}"
   wilderness-title: "&7Wilderness"
 
 actionbar:
@@ -49,7 +49,6 @@ fallbacks:
   temperature: "--"
   mana: "0"
   mana-max: "0"
-  biome: "Desconhecido"
 
 pvp:
   enabled-text: "ON"

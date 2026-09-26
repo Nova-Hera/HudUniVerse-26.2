@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "br.com.universe"
-version = "1.3.1"
+version = "1.3.3"
 
 repositories {
     mavenCentral()

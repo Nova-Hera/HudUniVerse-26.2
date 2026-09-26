@@ -1,4 +1,4 @@
-# HudUniVerse 1.3.1 — Paper 26.2 / Java 25
+# HudUniVerse 1.3.3 — Paper 26.2 / Java 25
 
 HUD integration plugin for the UniVerse Minecraft server.
 
@@ -31,6 +31,7 @@ The plugin registers these PlaceholderAPI placeholders:
 - `%huduniverse_y%`
 - `%huduniverse_z%`
 - `%huduniverse_coordinates%`
+- `%huduniverse_biome%`
 
 The values are obtained from the existing PlaceholderAPI placeholders supplied by the installed plugins:
 
@@ -105,6 +106,7 @@ scoreboard:
         - ""
         - "&d✦ &fMana: &d%huduniverse_mana%&7/&d%huduniverse_mana_max%"
         - "&b❄ &fTemp: &b%huduniverse_temperature%°C"
+        - "&🌿 &fBioma: &a%huduniverse_biome%"
         - "&c⚔ &fPVP: %huduniverse_pvp_color%%huduniverse_pvp%"
         - ""
         - "&8%huduniverse_coordinates%"
@@ -128,9 +130,9 @@ actionbar:
 
 If AuraSkills' own actionbar is enabled, the two plugins may compete for the actionbar. In that case either leave this feature disabled or configure AuraSkills' actionbar appropriately.
 
-## Permanent top location text (1.3.1)
+## Permanent top location text (1.3.2)
 
-HudUniVerse 1.3.1 keeps the physical Towny territory name permanently visible in the native BossBar text area at the top of the screen.
+HudUniVerse 1.3.2 keeps the physical Towny territory name permanently visible in the native BossBar text area at the top of the screen.
 
 The plugin does not hide/show the bar when crossing a boundary. It reuses the same BossBar and only changes its title after the Towny debounce, preventing the entry/exit flash.
 
@@ -160,7 +162,7 @@ Minecraft plugins cannot freely place ordinary text at arbitrary pixel coordinat
 For a pixel-perfect HUD matching the supplied screenshot, the next step is a client Resource Pack/font-glyph HUD. This plugin is the data/integration layer for that future HUD.
 
 
-## 1.3.1 — Permanent top location text
+## 1.3.2 — Permanent top location text
 
 - The location HUD is permanent.
 - There is no stay/fade timeout.
@@ -178,3 +180,13 @@ For a pixel-perfect HUD matching the supplied screenshot, the next step is a cli
 - The central location title uses `%huduniverse_location%` and changes when the player crosses into another Towny town.
 
 Towny is a compile-only dependency; the server still provides the Towny plugin at runtime.
+
+
+## 1.3.2
+The permanent top HUD can now display the physical Towny town and the Nation that owns that town using `{town}` and `{nation}`.
+
+
+## 1.3.3 — Biome placeholder
+- Adds `%huduniverse_biome%`, calculated from the player's current block biome.
+- The TAB example includes the biome in the right-side scoreboard.
+- Coordinates remain in the scoreboard; no Lunar/client HUD is required for the biome.

@@ -56,6 +56,7 @@ public final class HudUniVerseExpansion extends PlaceholderExpansion {
             case "temperature" -> plugin.getTemperature(player);
             case "mana" -> plugin.getMana(player);
             case "mana_max" -> plugin.getManaMax(player);
+            case "biome" -> plugin.getBiome(player);
             case "mana_percent" -> manaPercent(player);
             case "pvp" -> player.getWorld().getPVP()
                     ? plugin.getConfig().getString("pvp.enabled-text", "ON")
